@@ -1,17 +1,1 @@
-#Remote home automation and monitoring system
-##Features
-  - s
-  - 
-##DomAlgo is a remote home automation system that include:
-
-  -  Client page
-  -  Server software
-  -  Operating System
-  -  Sensor firmware
-  -  Wiki documentation
-
-DomAlgo is covered by GPLv3 license.
-
-For complete documentation, see the [Wiki](https://github.com/Gleeno/DomAlgo/wiki) and [project page](http://gleeno.github.io/DomAlgo)
-
-Copyright (C) 2016 Matteo Di Carlo - www.gleeno.com
+Domalgo V0.2
