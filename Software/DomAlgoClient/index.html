@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<!--
+Copyright (C) 2016 Matteo Di Carlo
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="js/jquery-2.1.4.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css"/>
+        <link rel="stylesheet" href="css/default.css" />
+    </head>
+    <body ng-app="DomAlgo">
+        <div class="container"><!-- START container -->
+            <nav class="navbar  navbar-fixed-top navbar-inverse"><!-- START main navbar -->
+                <div class="container"><!-- START main navbar container -->
+                    <div class="navbar-header col-md-2"><!-- START info -->
+                        <a class="navbar-brand" href="#">{{settings.NAME}} {{settings.VERSION}}</a>
+                    </div><!-- END info -->
+                    <ul class="nav navbar-nav">
+                        <li role="presentation" class="active "><a href="#realTime">Real time</a></li>
+                        <li role="presentation"><a href="#stats">Stats</a></li>
+                        <li role="presentation"><a href="#behaviour">Behaviour</a></li>
+                        <li role="presentation"><a href="#settings">Settings</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="#">
+                                <img ng-show="loadingState" src="images/loading.gif" alt="loader" height="20px"/>
+                            </a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+                               role="button" aria-haspopup="true" aria-expanded="false">
+                                Lang <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li role="presentation" class="active "><a href="#">ENG</a></li>
+                                <li role="presentation" ><a href="#">ITA</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div><!-- END main navbar container -->
+            </nav><!-- END main navbar -->
+            <div class="content"><!-- START content -->
+                    <div ng-view></div>
+            </div><!-- END content -->
+        </div><!-- END container -->
+        <script src="js/angular-1.5.0/angular.js"></script>
+        <script src="js/angular-1.5.0/angular-route.js"></script>
+        <script src="js/DomAlgo/DomAlgo.js"></script>
+        <script src="js/DomAlgo/services/getWs.service.js"></script>
+        <script src="js/DomAlgo/services/loadSetting.service.js"></script>
+        <script src="js/DomAlgo/services/DomAlgoInstruction.js"></script>
+        <script src="js/DomAlgo/controllers/realTime.js"></script>
+    </body>
+</html>
+
