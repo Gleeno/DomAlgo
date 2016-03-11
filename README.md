@@ -1,6 +1,7 @@
 #DomAlgo
+## Remote home automation e monitoring system
 
-##DomAlgo is a remote home automation system that include:
+###DomAlgo is a remote home automation system that include:
 
   -  Client page
   -  Server software
