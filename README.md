@@ -8,6 +8,7 @@
   -  Sensor firmware
   -  Wiki documentation
 
-It's covered by GPLv3 license, copyright 2015 of Matteo Di Carlo
+DomAlgo is covered by GPLv3 license.
 
-For complete documentation, see the <https://github.com/Gleeno/DomAlgo/wiki>
+For complete documentation, see the [Wiki](https://github.com/Gleeno/DomAlgo/wiki)
+Copyright (C) 2016 Matteo Di Carlo - www.gleeno.com
