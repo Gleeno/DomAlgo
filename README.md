@@ -2,7 +2,10 @@
 ## Remote home automation and monitoring system
 
 DomAlgo is a full, lightweight and fast system that provide all components to remote interaction with your house.
-For now it's available for Linux x86/64/Arm, such as Ubuntu/Ubuntu minimal distros, Windows and MacOS version will be developed in future.
+
+It's available for Linux x86/x64/ARM distros, Windows and MacOS version will be developed in future.
+
+For complete documentation and other info, see the [Wiki](https://github.com/Gleeno/DomAlgo/wiki) and [project page](http://gleeno.github.io/DomAlgo)
 
 ##Features
   - Real time monitoring
@@ -27,8 +30,4 @@ For now it's available for Linux x86/64/Arm, such as Ubuntu/Ubuntu minimal distr
 
 The project is still under development state, some parts are incomplete (face detection) and there's bugs to fix (incorrect data excange between sensors and server), if you like to contribute, you are Welcome!
 
-DomAlgo is covered by GPLv3 license.
-
-For complete documentation, see the [Wiki](https://github.com/Gleeno/DomAlgo/wiki) and [project page](http://gleeno.github.io/DomAlgo)
-
-Copyright (C) 2016 Matteo Di Carlo - www.gleeno.com
+DomAlgo is covered by GPLv3 license. Copyright (C) 2016 Matteo Di Carlo - www.gleeno.com
