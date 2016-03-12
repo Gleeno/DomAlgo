@@ -21,6 +21,8 @@
 #ifndef SIMPLESWITCH_HPP
 #define	SIMPLESWITCH_HPP
 
+#include "Sensor.hpp"
+
 class SimpleSwitch : public Sensor {
 public:
     SimpleSwitch(std::string id, sensType type, std::string name, std::string ip);

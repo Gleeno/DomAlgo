@@ -23,7 +23,7 @@
 #include <iostream>
 #include <libwebsockets.h>
 #include <string>
-#include "Synapsis/Core/SynapsisBase.hpp"
+#include "SynapsisBase.hpp"
 #include <vector>
 #include "Synapsis/Sensor/Sensor.hpp"
 #include "Synapsis/Sensor/SimpleSwitch.hpp"
@@ -59,3 +59,4 @@ public:
     static bool getDataSensor(Json::Value instruction, Json::Value result);
 };
 #endif	/* SYNAPSIS_HPP */
+

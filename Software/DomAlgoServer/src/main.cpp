@@ -18,9 +18,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Synapsis.hpp"
-#include "Log.hpp"
-#include "Camera.hpp"
+#include "Synapsis/Core/Synapsis.hpp"
+#include "Synapsis/Log/Log.hpp"
+
 int main(int argc, char** argv) {
     Synapsis *wsI = new Synapsis();
     wsI->connect("127.0.0.1",9002);
