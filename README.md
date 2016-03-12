@@ -1,13 +1,31 @@
 #DomAlgo
-## Remote home automation e monitoring system
+## Remote home automation and monitoring system
 
-###DomAlgo is a remote home automation system that include:
+DomAlgo is a full, lightweight and fast system that provide all components to a remote interaction with your house.
 
-  -  Client page
-  -  Server software
-  -  Operating System
-  -  Sensor firmware
-  -  Wiki documentation
+##Features
+  - Real time monitoring
+  - Stats of sensors data
+  - Programmable behaviours from client side
+  - Light and fast C++ server
+  - Face and object detection
+  - Html client for best compatibility
+  - Server on Intel and Arm cpu (Udoo, Raspberry)
+  - Low power wireless sensors
+
+##Domalgo provide:
+  - Client and Server software
+  - Sensors firmware
+  - Hardware specs and sketches
+  - Documentation
+
+## Libs and dependecies:
+  -  [libWebSocket 1.5](https://github.com/warmcat/libwebsockets/commits/v1.7-stable)
+  -  [openCV libs] (http://opencv.org/)
+  -  [JsonCpp libs] (https://github.com/open-source-parsers/jsoncpp)
+
+This project is still in developement, some parts are incomplete(face detection) and there's bugs to fix ( wrong data sent bethween sensors and server ).
+If we like to contribute, you are Welcome!
 
 DomAlgo is covered by GPLv3 license.
 
