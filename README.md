@@ -2,6 +2,7 @@
 ## Remote home automation and monitoring system
 
 DomAlgo is a full, lightweight and fast system that provide all components to remote interaction with your house.
+For now it's available for Linux x86/64/Arm, such as Ubuntu/Ubuntu minimal distros, Windows and MacOS version will be developed in future.
 
 ##Features
   - Real time monitoring
@@ -19,7 +20,7 @@ DomAlgo is a full, lightweight and fast system that provide all components to re
   - Hardware specs and sketches
   - Documentation
 
-## Libs and dependecies:
+## Dependecies:
   -  [libWebSocket 1.5](https://github.com/warmcat/libwebsockets/commits/v1.7-stable)
   -  [openCV libs] (http://opencv.org/)
   -  [JsonCpp libs] (https://github.com/open-source-parsers/jsoncpp)
