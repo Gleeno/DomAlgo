@@ -23,7 +23,7 @@ For complete documentation and other info, see the [Wiki](https://github.com/Gle
   - Hardware specs and sketches
   - Documentation
 
-## Dependecies:
+## Dependencies:
   -  [C++ libWebSocket 1.5](https://github.com/warmcat/libwebsockets/commits/v1.7-stable)
   -  [C++ openCV 3.1] (http://opencv.org/)
   -  [JsonCpp] (https://github.com/open-source-parsers/jsoncpp)
