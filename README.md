@@ -24,9 +24,11 @@ For complete documentation and other info, see the [Wiki](https://github.com/Gle
   - Documentation
 
 ## Dependecies:
-  -  [libWebSocket 1.5](https://github.com/warmcat/libwebsockets/commits/v1.7-stable)
-  -  [openCV libs] (http://opencv.org/)
-  -  [JsonCpp libs] (https://github.com/open-source-parsers/jsoncpp)
+  -  [C++ libWebSocket 1.5](https://github.com/warmcat/libwebsockets/commits/v1.7-stable)
+  -  [C++ openCV 3.1] (http://opencv.org/)
+  -  [JsonCpp] (https://github.com/open-source-parsers/jsoncpp)
+  -  [AngularJS 1.5](https://angularjs.org/)
+  -  [Bootstrap](http://getbootstrap.com/)
 
 The project is still under development state, some parts are incomplete (face detection) and there's bugs to fix (incorrect data excange between sensors and server), if you like to contribute, you are Welcome!
 
