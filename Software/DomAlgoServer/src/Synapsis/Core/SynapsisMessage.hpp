@@ -1,7 +1,7 @@
 /* 
- * File:   SynapsisBase.hpp
+ * File:   SynapsisMessage.hpp
  * Author: Matteo Di Carlo
- * Created on December 13, 2015, 4:16 PM
+ * Created on March 13, 2016, 5:02 PM
  * 
  * Copyright (C) 2016 Matteo Di Carlo - www.gleeno.com
  * This program is free software: you can redistribute it and/or modify
@@ -18,19 +18,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SYNAPSISBASE_HPP
-#define	SYNAPSISBASE_HPP
-#include "Synapsis/Core/SynapsisMessage.hpp"
-class SynapsisBase {
+#ifndef SYNAPSISMESSAGE_HPP
+#define	SYNAPSISMESSAGE_HPP
+#include <json/json.h>
+#include <string>
+#include <fstream>
+#include <cerrno>
+#include "Synapsis/Log/Log.hpp"
+#include <Synapsis/Message/en.hpp>
+class SynapsisMessage {
 public:
-    SynapsisBase();
-    SynapsisBase(const SynapsisBase& orig);
-    virtual ~SynapsisBase();
-    std::string getContFromFile(std::string source);
-    static Json::Value getJson(char type,std::string* sourceOrPath);
-    Json::Value getSettingsRaw();
-protected:
-    static Json::Value settingsRaw;
+    SynapsisMessage(void **message);
+    SynapsisMessage(const SynapsisMessage& orig);
+    virtual ~SynapsisMessage();
+    bool isSynapsisInstruction();
+    Json::Value getJson(char type, std::string* sourceOrPath);
+private:
+    std::string message;
 };
 
-#endif	/* SYNAPSISBASE_HPP */
+#endif	/* SYNAPSISMESSAGE_HPP */
+

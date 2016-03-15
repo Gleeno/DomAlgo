@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+    
 #include "Synapsis.hpp"
 std::vector<Sensor*> Synapsis::sensors;
 
@@ -82,6 +82,8 @@ int Synapsis::callback_instruction(
 
 lws_write_protocol Synapsis::parseInstruction(void ** in, Json::Value result,
         std::string* clientName, std::string* clientIp) {
+    SynapsisMessage inst= SynapsisMessage(in);
+    
     Json::Value instruction;
     std::string action;
     try {
@@ -103,78 +105,6 @@ lws_write_protocol Synapsis::parseInstruction(void ** in, Json::Value result,
     }
     //notify(settingsRaw["L_INVALID_INSTRUCTION"].asString(),result);
     return (lws_write_protocol)settingsRaw["N_BAD_INSTRUCTION"].isInt();
-}
-/*
-    if (isSynapsisInstruction(&instruction)) {
-        sensType type = (sensType) instruction["type"].asInt();
-        std::string action = instruction["action"].asString();
-        if (action.compare(settingsRaw["A_PAIRING"].asString()) == 0) {
-            if (!isPaired(instruction["id"].asString())) {
-                if (type == sensType::TERMINAL) {
-                    sensors.push_back(new Sensor(instruction["id"].asString(),
-                            (sensType) instruction["type"].asInt(),
-                            clientName, clientIp));
-                    msg = L_SUCCESS;
-                }
-                else {
-                    msg= L_SENSOR_TYPE_UNKNOWN;
-                }
-            }    
-            else
-                msg = L_SENSOR_JUST_PAIRED;            
-            *resultState = settingsRaw["TEXT_FORMAT"].asInt();
-        } 
-        else if (action.compare(settingsRaw["A_GET_DATA_SENSOR"].asString()) == 0) {
-            if (isPaired(instruction["id"].asString())) {
-                *resultState = settingsRaw["TEXT_FORMAT"].asInt();
-                msg = "valOf1";
-            } else
-                msg = L_SENSOR_NOT_PAIRED;
-            *resultState = settingsRaw["TEXT_FORMAT"].asInt();
-        } 
-        else {
-            *resultState = settingsRaw["N_INSTRUCTION_NOT_DEFINED"].asInt();
-            msg = L_INSTRUCTION_NOT_DEFINED;
-        }
-    } 
-    else *resultState = settingsRaw["N_BAD_INSTRUCTION"].asInt();
-    //
-    if (*resultState == 2) *resultLen = buf.size();
-    else *resultLen = msg.length();
-    result = (unsigned char*) malloc(*resultLen + LWS_SEND_BUFFER_PRE_PADDING * sizeof(unsigned char));
-    memset(result, 0, *resultLen + LWS_SEND_BUFFER_PRE_PADDING);
-    switch (*resultState) {
-    case 1:
-        std::cout << "Text size: " << *resultLen << std::endl;
-        memcpy(result + LWS_SEND_BUFFER_PRE_PADDING, (unsigned char*) msg.c_str(), *resultLen);
-        break;
-    case 2:
-        std::cout << "Binary size: " << *resultLen << std::endl;
-        memcpy(result + LWS_SEND_BUFFER_PRE_PADDING, buf.data(), *resultLen);
-        break;
-    default:
-        std::cout << "[NO_FORMAT] size: " << *resultLen << std::endl;
-        memcpy(result + LWS_SEND_BUFFER_PRE_PADDING, (unsigned char*) msg.c_str(), *resultLen);
-        break;
-    }
-    return result;
-}
-*/
-
-bool Synapsis::isSynapsisInstruction(Json::Value* instruction)
-{
-    if (instruction->isNull() ||
-            instruction->empty() ||
-            (!instruction->isMember("action")) ||
-            (!instruction->isMember("data")) ||
-            (!instruction->isMember("id")) ||
-            (!instruction->isMember("type"))
-            ) {
-        l(L_WRONG_INSTRUCTION_FORMAT);
-        return false;
-    }
-    l(L_RIGHT_INSTRUCTION_FORMAT);
-    return true;
 }
 
 bool Synapsis::isPaired(std::string sensorId)
@@ -241,4 +171,20 @@ int Synapsis::makeInstruction(std::string action, std::string* data, Json::Value
     result["type"] = std::to_string((int)type);
     result["data"] = data;
     return settingsRaw["N_SUCCESS"].asInt();
+}
+
+bool Synapsis::isSynapsisInstruction(Json::Value* instruction)
+{
+    if (instruction->isNull() ||
+            instruction->empty() ||
+            (!instruction->isMember("action")) ||
+            (!instruction->isMember("data")) ||
+            (!instruction->isMember("id")) ||
+            (!instruction->isMember("type"))
+            ) {
+        l(L_WRONG_INSTRUCTION_FORMAT);
+        return false;
+    }
+    l(L_RIGHT_INSTRUCTION_FORMAT);
+    return true;
 }
