@@ -65,6 +65,7 @@ Json::Value SynapsisBase::getJson(char type, std::string* sourceOrPath){
             if(!r.parse(contents,v,false))
                 throw(errno);
         }
+        else std::cout << "GetJson: file error." << std::endl;
     }
     else {
          if(!r.parse(*sourceOrPath,v,false)) {

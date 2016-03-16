@@ -23,8 +23,8 @@
 #include <iostream>
 #include <libwebsockets.h>
 #include <string>
-#include "SynapsisBase.hpp"
 #include <vector>
+#include <Synapsis/Core/SynapsisMessage.hpp>
 #include "Synapsis/Sensor/Sensor.hpp"
 #include "Synapsis/Sensor/SimpleSwitch.hpp"
 #include <unistd.h> //sleep
@@ -52,7 +52,6 @@ public:
     static int makeInstruction(std::string action, std::string* data,
             Json::Value result, sensType type= sensType::GENERIC,
             std::string id="no_id");
-    static bool isSynapsisInstruction(Json::Value* instruction);
     static bool pairing(Json::Value instruction,Json::Value result,
             std::string* clientName, std::string* clientIp);
     static bool isPaired(std::string sensorId);

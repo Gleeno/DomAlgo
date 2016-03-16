@@ -82,8 +82,8 @@ int Synapsis::callback_instruction(
 
 lws_write_protocol Synapsis::parseInstruction(void ** in, Json::Value result,
         std::string* clientName, std::string* clientIp) {
-    SynapsisMessage inst= SynapsisMessage(in);
     
+    SynapsisMessage inst= SynapsisMessage(in);
     Json::Value instruction;
     std::string action;
     try {
@@ -91,7 +91,7 @@ lws_write_protocol Synapsis::parseInstruction(void ** in, Json::Value result,
     }
     catch (int e) { std::cout << "Json parse error: errno: " << e << std::endl; }
     action = instruction["action"].asString();
-    if (isSynapsisInstruction(&instruction)) {
+    if (inst.isSynapsisInstruction()) {
         //action PAIRING
         if(action.compare(settingsRaw["A_PAIRING"].asString()) == 0)
             pairing(instruction,result, clientName, clientIp);
@@ -171,20 +171,4 @@ int Synapsis::makeInstruction(std::string action, std::string* data, Json::Value
     result["type"] = std::to_string((int)type);
     result["data"] = data;
     return settingsRaw["N_SUCCESS"].asInt();
-}
-
-bool Synapsis::isSynapsisInstruction(Json::Value* instruction)
-{
-    if (instruction->isNull() ||
-            instruction->empty() ||
-            (!instruction->isMember("action")) ||
-            (!instruction->isMember("data")) ||
-            (!instruction->isMember("id")) ||
-            (!instruction->isMember("type"))
-            ) {
-        l(L_WRONG_INSTRUCTION_FORMAT);
-        return false;
-    }
-    l(L_RIGHT_INSTRUCTION_FORMAT);
-    return true;
 }

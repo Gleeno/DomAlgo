@@ -20,44 +20,32 @@
 
 #include "SynapsisMessage.hpp"
 
-SynapsisMessage::SynapsisMessage(void** message)
+SynapsisMessage::SynapsisMessage() : SynapsisBase()
 {
-    void* s = *message;
+
 }
 
-SynapsisMessage::SynapsisMessage(const SynapsisMessage& orig)
+SynapsisMessage::SynapsisMessage(void** in)
 {
+    SynapsisMessage();
+    if (settingsRaw["MESSAGE_TYPE"].compare("json") == 0)
+        this->message = getJson('s', (std::string*)in);
+    else std::cout << "SynapsisMessage: undefined message type: " << 
+        settingsRaw["MESSAGE_TYPE"].toStyledString() << std::endl;
 }
 
-SynapsisMessage::~SynapsisMessage()
-{
-}
 bool SynapsisMessage::isSynapsisInstruction()
 {
+    if (this->message.isNull() ||
+            this->message.empty() ||
+            (!this->message.isMember("action")) ||
+            (!this->message.isMember("data")) ||
+            (!this->message.isMember("id")) ||
+            (!this->message.isMember("type"))
+            ) {
+        l(L_WRONG_INSTRUCTION_FORMAT);
+        return false;
+    }
+    l(L_RIGHT_INSTRUCTION_FORMAT);
     return true;
-}
-
-Json::Value SynapsisMessage::getJson(char type, std::string* sourceOrPath){
-    Json::Value v;
-    Json::Reader r;
-    if(type == 'f') {
-        std::ifstream in(*sourceOrPath, std::ios::in | std::ios::binary);
-        if (in) {
-            std::string contents;
-            in.seekg(0, std::ios::end);
-            contents.resize(in.tellg());
-            in.seekg(0, std::ios::beg);
-            in.read(&contents[0], contents.size());
-            in.close();
-            if(!r.parse(contents,v,false))
-                throw(errno);
-        }
-    }
-    else {
-         if(!r.parse(*sourceOrPath,v,false)) {
-             lall("Instruction in bad format ( no json ). Exit");
-             throw(errno);
-         }
-    }
-    return v;
 }

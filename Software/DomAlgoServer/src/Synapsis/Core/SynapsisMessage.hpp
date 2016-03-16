@@ -20,21 +20,17 @@
 
 #ifndef SYNAPSISMESSAGE_HPP
 #define	SYNAPSISMESSAGE_HPP
-#include <json/json.h>
-#include <string>
-#include <fstream>
-#include <cerrno>
-#include "Synapsis/Log/Log.hpp"
+#include "Synapsis/Core/SynapsisBase.hpp"
 #include <Synapsis/Message/en.hpp>
-class SynapsisMessage {
+
+class SynapsisMessage : public SynapsisBase 
+{
 public:
-    SynapsisMessage(void **message);
-    SynapsisMessage(const SynapsisMessage& orig);
-    virtual ~SynapsisMessage();
+    SynapsisMessage();
+    SynapsisMessage(void **in);
     bool isSynapsisInstruction();
-    Json::Value getJson(char type, std::string* sourceOrPath);
 private:
-    std::string message;
+    Json::Value message;
 };
 
 #endif	/* SYNAPSISMESSAGE_HPP */

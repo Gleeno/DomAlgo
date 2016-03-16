@@ -20,7 +20,12 @@
 
 #ifndef SYNAPSISBASE_HPP
 #define	SYNAPSISBASE_HPP
-#include "Synapsis/Core/SynapsisMessage.hpp"
+#include <json/json.h>
+#include <string>
+#include <fstream>
+#include <cerrno>
+#include "Synapsis/Log/Log.hpp"
+#include <Synapsis/Message/en.hpp>
 class SynapsisBase {
 public:
     SynapsisBase();
