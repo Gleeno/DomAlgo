@@ -27,9 +27,9 @@ class SynapsisMessage : public SynapsisBase
 {
 public:
     SynapsisMessage();
-    SynapsisMessage(void **in);
+    SynapsisMessage(void *in);
     bool isSynapsisInstruction();
-private:
+protected:
     Json::Value message;
 };
 

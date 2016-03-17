@@ -1,7 +1,7 @@
 /* 
- * File:   main.cpp
+ * File:   Error.hpp
  * Author: Matteo Di Carlo
- * Created on December 10, 2015, 4:26 PM
+ * Created on March 17, 2016, 10:17 AM
  * 
  * Copyright (C) 2016 Matteo Di Carlo - www.gleeno.com
  * This program is free software: you can redistribute it and/or modify
@@ -18,16 +18,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Synapsis/Core/Synapsis.hpp"
-#include "Synapsis/Log/Log.hpp"
-#include "Synapsis/Core/Syn.hpp"
+#ifndef ERROR_HPP
+#define	ERROR_HPP
+enum status_t {
+    OK = 1,
+    UND = 0,
+    ERR_GEN = -1,
+    
+    ERR_RW_FILE = -2
+};
 
-int main(int argc, char** argv) {
-    Syn mainConn = Syn();
-    mainConn.setupWsConnection();
-    while(true) {
-        lws_service(mainConn.getWS() , 100); //get ws context
-    }    
-    return 0;
-}
+
+#endif	/* ERROR_HPP */
 

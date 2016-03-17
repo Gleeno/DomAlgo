@@ -24,7 +24,7 @@
 #include <libwebsockets.h>
 #include <string>
 #include <vector>
-#include <Synapsis/Core/SynapsisMessage.hpp>
+#include "Synapsis/Core/SynapsisMessage.hpp"
 #include "Synapsis/Sensor/Sensor.hpp"
 #include "Synapsis/Sensor/SimpleSwitch.hpp"
 #include <unistd.h> //sleep
@@ -40,14 +40,16 @@ public:
     
     Synapsis();
     int connect(std::string address="127.0.0.1", int port=9002);
-
+    static int performAction();
+    
     static int callback_instruction(
                          struct lws *wsi,
                          enum lws_callback_reasons reason, void *user,
                          void *in, size_t len);
     
-    static lws_write_protocol parseInstruction(void ** in, Json::Value result,
-    std::string* clientName, std::string* clientIp);
+    static lws_write_protocol parseInstruction(void * in,
+            std::vector<unsigned char> *buffer, std::string* clientName,
+            std::string* clientIp);
     static int notify(std::string message, Json::Value result);
     static int makeInstruction(std::string action, std::string* data,
             Json::Value result, sensType type= sensType::GENERIC,

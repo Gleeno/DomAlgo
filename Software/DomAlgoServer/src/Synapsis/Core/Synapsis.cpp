@@ -19,7 +19,6 @@
  */
     
 #include "Synapsis.hpp"
-std::vector<Sensor*> Synapsis::sensors;
 
 Synapsis::Synapsis(){}
 
@@ -60,8 +59,8 @@ int Synapsis::callback_instruction(
         void *in, size_t len) {
     int dataW;
     lws_write_protocol writeProtocol;
-    Json::Value result;
-    std::string name = "anme";
+    std::vector<unsigned char> buffer;
+    std::string name = "name";
     std::string ip = "2344";
     
     switch (reason) {
@@ -69,10 +68,10 @@ int Synapsis::callback_instruction(
         l((std::string)L_CONNECTED);
         break;
     case LWS_CALLBACK_RECEIVE:
-        writeProtocol = parseInstruction(&in, &result, &name, &ip);
+        writeProtocol = parseInstruction(in, &buffer, &name, &ip);
         if (writeProtocol == LWS_WRITE_TEXT || writeProtocol == LWS_WRITE_BINARY) {
-            dataW = lws_write(wsi, (unsigned char*)result.asString().data(), result.asString().length(), writeProtocol);
-            l(std::to_string(dataW) + " DATA SENT: " + result.asString());
+            dataW = lws_write(wsi, buffer.data(),buffer.size(), writeProtocol);
+            //l(std::to_string(dataW) + " DATA SENT: " + std::to_string(buffer.data));
         }
         else l((std::string)L_INVALID_INSTRUCTION);
     break;
@@ -80,40 +79,25 @@ int Synapsis::callback_instruction(
     return 0;
 }
 
-lws_write_protocol Synapsis::parseInstruction(void ** in, Json::Value result,
+lws_write_protocol Synapsis::parseInstruction(void *in,
+        std::vector<unsigned char> *buffer,
         std::string* clientName, std::string* clientIp) {
-    
-    SynapsisMessage inst= SynapsisMessage(in);
-    Json::Value instruction;
-    std::string action;
-    try {
-        instruction = getJson('s', (std::string*)in);
+    SynapsisMessage message = SynapsisMessage(in);
+    if (message.isSynapsisInstruction()){
+        int actionStatus;        
+        actionStatus = performAction();
+            if( actionStatus == 1)
+                return LWS_WRITE_TEXT;        
     }
-    catch (int e) { std::cout << "Json parse error: errno: " << e << std::endl; }
-    action = instruction["action"].asString();
-    if (inst.isSynapsisInstruction()) {
-        //action PAIRING
-        if(action.compare(settingsRaw["A_PAIRING"].asString()) == 0)
-            pairing(instruction,result, clientName, clientIp);
-        //action get data sensor
-        else if(action.compare(settingsRaw["A_GET_DATA_SENSOR"].asString()) == 0)
-            getDataSensor(instruction,result);
-        //action not defined
-        else
-            notify(L_INSTRUCTION_NOT_DEFINED + action ,&result);
-        return LWS_WRITE_TEXT;        
-    }
-    //notify(settingsRaw["L_INVALID_INSTRUCTION"].asString(),result);
     return (lws_write_protocol)settingsRaw["N_BAD_INSTRUCTION"].isInt();
+}
+
+int Synapsis::performAction() {
+    
 }
 
 bool Synapsis::isPaired(std::string sensorId)
 {
-    for (int i = 0; i < sensors.size(); i++) {
-        if (sensors[i]->getId().compare(sensorId) == 0)
-            return true;
-    }
-    return false;
 }
 
 int Synapsis::notify(std::string message, Json::Value result) {
@@ -127,11 +111,11 @@ bool Synapsis::pairing(Json::Value instruction, Json::Value result,
     sensType type = (sensType) instruction["type"].asInt();
     if (!isPaired(id)) {
                 if (type == sensType::TERMINAL) {
-                    sensors.push_back(new Sensor(id,type,*clientName, *clientIp));
+                    //sensors.push_back(new Sensor(id,type,*clientName, *clientIp));
                     notify(L_SENSOR_PAIRED_SUCCESS,&result);
                 }
                 else if (type == sensType::SIMPLE_SWITCH) {
-                    sensors.push_back(new SimpleSwitch(id,type,*clientName, *clientIp));
+                    //sensors.push_back(new SimpleSwitch(id,type,*clientName, *clientIp));
                     notify(L_SENSOR_PAIRED_SUCCESS,&result);
                 }
                 else
@@ -142,6 +126,7 @@ bool Synapsis::pairing(Json::Value instruction, Json::Value result,
     return true;
 }
 
+
 bool Synapsis::getDataSensor(Json::Value instruction, Json::Value result) {
     std::string action = instruction["action"].asString();
     std::string id= instruction["id"].asString();
@@ -149,19 +134,6 @@ bool Synapsis::getDataSensor(Json::Value instruction, Json::Value result) {
     std::string data;
     Json::Value tmp;
     
-    if(sensors.size() <= 0 ) {
-        notify(L_NO_SENSORS,result);
-        return false;
-    }
-    if(id.compare("all") == 0) {
-        for(int i=0; i <sensors.size();i++) {           
-            tmp["action"] = settingsRaw["A_GET_DATA_SENSOR"].asString();
-            tmp["id"] = sensors[i]->getId();
-            tmp["type"] = std::to_string(sensors[i]->getType());
-            tmp["data"]["test"]= "";//.append(sensors[i]->getDataSensor());
-        }
-        makeInstruction(action,&data,result,type,id);
-    }
     return true;
 }
 

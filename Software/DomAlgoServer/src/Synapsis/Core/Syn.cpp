@@ -1,7 +1,7 @@
 /* 
- * File:   main.cpp
+ * File:   Syn.cpp
  * Author: Matteo Di Carlo
- * Created on December 10, 2015, 4:26 PM
+ * Created on March 17, 2016, 8:59 AM
  * 
  * Copyright (C) 2016 Matteo Di Carlo - www.gleeno.com
  * This program is free software: you can redistribute it and/or modify
@@ -18,16 +18,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Synapsis/Core/Synapsis.hpp"
-#include "Synapsis/Log/Log.hpp"
-#include "Synapsis/Core/Syn.hpp"
+#include "Syn.hpp"
 
-int main(int argc, char** argv) {
-    Syn mainConn = Syn();
-    mainConn.setupWsConnection();
-    while(true) {
-        lws_service(mainConn.getWS() , 100); //get ws context
-    }    
-    return 0;
+Syn::Syn() {
+    
+}
+int Syn::setupWsConnection(int port) {
+    static struct lws_protocols protocols[] = {
+        { "mainProtocol", mainCallback, 0},{ NULL, NULL, 0}}; 
+    
+    SynWS ws= SynWS(protocols,port);    
+    this->ws = ws.getContext();
+    return UND;
+}
+
+lws_context * Syn::getWS() {
+    return this->ws;
+}
+
+int Syn::mainCallback(struct lws* wsi, lws_callback_reasons reason, void* user, void* in, size_t len) {
+    switch (reason) {
+        case LWS_CALLBACK_ESTABLISHED:
+            std::cout << "Connection estabilished." << std::endl;
+            break;
+    }
+    return UND;
 }
 

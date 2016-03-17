@@ -25,7 +25,7 @@ SynapsisMessage::SynapsisMessage() : SynapsisBase()
 
 }
 
-SynapsisMessage::SynapsisMessage(void** in)
+SynapsisMessage::SynapsisMessage(void* in)
 {
     SynapsisMessage();
     if (settingsRaw["MESSAGE_TYPE"].compare("json") == 0)

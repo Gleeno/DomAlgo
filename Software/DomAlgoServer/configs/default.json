@@ -6,7 +6,7 @@
     "CONFIG_PATH" : "configs/",
     "WS_ADDRESS": "ws://127.0.0.1:",
     "WS_PORT": 9002,    
-    "WS_PROTOCOL": "instruction_protocol",
+    "WS_PROTOCOL": "mainProtocol",
     "N_INSTRUCTION_NOT_DEFINED" : 0,
     "N_BAD_INSTRUCTION" : -1,
     "IP_ADDRESS_LENGHT" : 16,

@@ -1,7 +1,7 @@
 /* 
- * File:   main.cpp
+ * File:   SynWS.cpp
  * Author: Matteo Di Carlo
- * Created on December 10, 2015, 4:26 PM
+ * Created on March 17, 2016, 12:15 PM
  * 
  * Copyright (C) 2016 Matteo Di Carlo - www.gleeno.com
  * This program is free software: you can redistribute it and/or modify
@@ -18,16 +18,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Synapsis/Core/Synapsis.hpp"
-#include "Synapsis/Log/Log.hpp"
-#include "Synapsis/Core/Syn.hpp"
+#include "SynWS.hpp"
 
-int main(int argc, char** argv) {
-    Syn mainConn = Syn();
-    mainConn.setupWsConnection();
-    while(true) {
-        lws_service(mainConn.getWS() , 100); //get ws context
-    }    
-    return 0;
+SynWS::SynWS(struct lws_protocols* protocols, int port) {
+    struct lws_context_creation_info info;   
+    memset(&info, 0, sizeof (info));
+    info.port = port;
+    info.iface = NULL;
+    info.protocols = protocols;
+    info.extensions = lws_get_internal_extensions();
+    info.ssl_cert_filepath = NULL;
+    info.ssl_private_key_filepath = NULL;
+    info.gid = -1;
+    info.uid = -1;
+    info.options = 0;
+    this->context = lws_create_context(&info);
+    if (this->context == NULL) {
+        fprintf(stderr, "libwebsocket init failed\n");
+    }
 }
 
+lws_context * SynWS::getContext() {
+    return this->context;
+}
