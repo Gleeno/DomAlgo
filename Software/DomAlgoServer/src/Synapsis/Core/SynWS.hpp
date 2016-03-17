@@ -22,6 +22,7 @@
 #define	SYNWS_HPP
 #include <iostream>
 #include <libwebsockets.h>
+
 class SynWS {
 public:
     SynWS(struct lws_protocols* protocols, int port);

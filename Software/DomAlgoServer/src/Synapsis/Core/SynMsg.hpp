@@ -1,7 +1,7 @@
 /* 
- * File:   main.cpp
+ * File:   SynMsg.hpp
  * Author: Matteo Di Carlo
- * Created on December 10, 2015, 4:26 PM
+ * Created on March 17, 2016, 9:05 PM
  * 
  * Copyright (C) 2016 Matteo Di Carlo - www.gleeno.com
  * This program is free software: you can redistribute it and/or modify
@@ -18,15 +18,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Synapsis/Core/Synapsis.hpp"
-#include "Synapsis/Log/Log.hpp"
-#include "Synapsis/Core/Syn.hpp"
+#ifndef SYNMSG_HPP
+#define	SYNMSG_HPP
+#include <iostream>
+#include "Synapsis/Common/Status.hpp"
+#include <json/json.h>
 
-int main(int argc, char** argv) {
-    Syn mainConn = Syn();
-    mainConn.setupWsConnection(); //setup ws; def. port=9002
-    while(true) {
-        lws_service(mainConn.getWS() , 100); //get ws context;polling
-    }    
-    return 0;
-}
+class SynMsg {
+public:
+    SynMsg(void *rawMsg);
+    static int l(int code);
+    bool isSynMsg();
+    bool isCreate();
+    bool isRead();
+    bool isUpdate();
+    bool isDelete();
+private:
+    Json::Value msg;
+};
+
+#endif	/* SYNMSG_HPP */
+

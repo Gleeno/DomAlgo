@@ -20,12 +20,25 @@
 
 #ifndef ERROR_HPP
 #define	ERROR_HPP
+
+#define L_OK "Success!",
+#define L_UND "Undefined",
+#define L_ERR_GEN  "Generic error",
+#define L_ERR_RW_FILE "Read/write file error" ,
+#define L_LWS_INIT_FAILED  "WebSocket init failed"
+
 enum status_t {
+    RIGHT_MSG_FORMAT = 3,
+    CL_CONNECTED = 2,
     OK = 1,
     UND = 0,
     ERR_GEN = -1,
+    ERR_RW_FILE = -2,
+    ERR_LWS_INIT = -3,
+    ERR_JSON_PARSE = -4,
+    ERR_MSG_INVALID = -5,
+    ERR_BAD_MSG_FORMAT = -6
     
-    ERR_RW_FILE = -2
 };
 
 

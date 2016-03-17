@@ -34,7 +34,7 @@ SynWS::SynWS(struct lws_protocols* protocols, int port) {
     info.options = 0;
     this->context = lws_create_context(&info);
     if (this->context == NULL) {
-        fprintf(stderr, "libwebsocket init failed\n");
+        std::cout << "Error WebSocket init failed: -3"  << std::endl; //lws init failed        
     }
 }
 

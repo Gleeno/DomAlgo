@@ -21,13 +21,16 @@
 #include "Syn.hpp"
 
 Syn::Syn() {
-    
+
 }
+
 int Syn::setupWsConnection(int port) {
     static struct lws_protocols protocols[] = {
-        { "mainProtocol", mainCallback, 0},{ NULL, NULL, 0}}; 
-    
-    SynWS ws= SynWS(protocols,port);    
+        { "mainProtocol", mainCallback, 0},
+        { NULL, NULL, 0}
+    };
+
+    SynWS ws = SynWS(protocols, port);
     this->ws = ws.getContext();
     return UND;
 }
@@ -38,10 +41,32 @@ lws_context * Syn::getWS() {
 
 int Syn::mainCallback(struct lws* wsi, lws_callback_reasons reason, void* user, void* in, size_t len) {
     switch (reason) {
-        case LWS_CALLBACK_ESTABLISHED:
-            std::cout << "Connection estabilished." << std::endl;
+    case LWS_CALLBACK_ESTABLISHED:
+        SynMsg::l(CL_CONNECTED);
+        break;
+        case LWS_CALLBACK_RECEIVE:
+            processMessage(in);
             break;
     }
-    return UND;
+    return 0;
 }
 
+int Syn::processMessage(void* in) {
+    SynMsg msg = SynMsg(in);
+    // check for right msg format
+    if(!msg.isSynMsg()) 
+        return SynMsg::l(ERR_MSG_INVALID);
+    else {
+        SynMsg::l(RIGHT_MSG_FORMAT);
+        if(msg.isCreate()) // pairing == CREATE
+            std::cout << "Action: create" << std::endl;
+        else if(msg.isRead())
+            std::cout << "Action: read" << std::endl;
+        else if(msg.isUpdate())
+            std::cout << "Action: update" << std::endl;
+        else if(msg.isDelete())
+            std::cout << "Action: delete" << std::endl;
+    }
+    
+    return UND;
+}

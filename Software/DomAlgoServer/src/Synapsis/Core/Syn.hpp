@@ -21,6 +21,8 @@
 #ifndef SYN_HPP
 #define	SYN_HPP
 #include "SynBase.hpp"
+#include "SynMsg.hpp"
+#include "Synapsis/Sensor/Sensor.hpp"
 
 class Syn {
 public:
@@ -29,9 +31,10 @@ public:
     lws_context * getWS();
     static int mainCallback(struct lws *wsi,enum lws_callback_reasons reason, void *user,
         void *in, size_t len);
+    static int processMessage(void *in);
 private:
     lws_context *ws;
+    std::vector<Sensor> sensors;
 };
 
 #endif	/* SYN_HPP */
-
