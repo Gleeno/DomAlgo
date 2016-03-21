@@ -20,6 +20,7 @@
 
 #ifndef SYN_HPP
 #define	SYN_HPP
+#include <vector>
 #include "SynBase.hpp"
 #include "SynMsg.hpp"
 #include "Synapsis/Sensor/Sensor.hpp"
@@ -32,9 +33,10 @@ public:
     static int mainCallback(struct lws *wsi,enum lws_callback_reasons reason, void *user,
         void *in, size_t len);
     static int processMessage(void *in);
+    static std::vector<Sensor> sensors;
+    static int create(Json::Value* msg);
 private:
     lws_context *ws;
-    std::vector<Sensor> sensors;
 };
 
 #endif	/* SYN_HPP */

@@ -26,6 +26,7 @@
 
 class SynMsg {
 public:
+    SynMsg();
     SynMsg(void *rawMsg);
     static int l(int code);
     bool isSynMsg();
@@ -33,6 +34,9 @@ public:
     bool isRead();
     bool isUpdate();
     bool isDelete();
+    std::string getId();
+    Json::Value * getMsg();
+    int addMsg(void *rawMsg);
 private:
     Json::Value msg;
 };

@@ -20,10 +20,12 @@
 
 #include "SynMsg.hpp"
 
+SynMsg::SynMsg() {
+    
+}
+
 SynMsg::SynMsg(void* rawMsg) {
-    Json::Reader reader;
-    int status = reader.parse((char*)rawMsg,this->msg);
-    if (!status) l(ERR_JSON_PARSE);
+    this->addMsg(rawMsg);
 }
 int SynMsg::l(int code) {
         switch (code) {
@@ -71,4 +73,20 @@ bool SynMsg::isDelete() {
     if(this->msg["action"].asString().compare("delete") == 0)
         return true;
     return false;
+}
+
+Json::Value * SynMsg::getMsg() {
+    return &this->msg;
+}
+
+std::string SynMsg::getId() {
+    return this->msg.get("id","UTF-8").asString();
+}
+
+int SynMsg::addMsg(void * rawMsg) {
+    Json::Reader reader;
+    int status = reader.parse((char*)rawMsg,this->msg);
+    if (!status) 
+        return l(ERR_JSON_PARSE);
+    return OK;    
 }

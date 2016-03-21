@@ -28,6 +28,8 @@
 #define L_LWS_INIT_FAILED  "WebSocket init failed"
 
 enum status_t {
+    SNS_PAIRED_SUCC = 4,
+    SNS_EXIST = 4,
     RIGHT_MSG_FORMAT = 3,
     CL_CONNECTED = 2,
     OK = 1,
@@ -41,6 +43,4 @@ enum status_t {
     
 };
 
-
 #endif	/* ERROR_HPP */
-

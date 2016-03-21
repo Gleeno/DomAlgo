@@ -19,10 +19,12 @@
  */
 
 #include "Syn.hpp"
+std::vector<Sensor> Syn::sensors;
+//SynMsg Syn::msg;
 
 Syn::Syn() {
-
 }
+
 
 int Syn::setupWsConnection(int port) {
     static struct lws_protocols protocols[] = {
@@ -53,20 +55,36 @@ int Syn::mainCallback(struct lws* wsi, lws_callback_reasons reason, void* user, 
 
 int Syn::processMessage(void* in) {
     SynMsg msg = SynMsg(in);
+    int opStatus = UND;
     // check for right msg format
     if(!msg.isSynMsg()) 
         return SynMsg::l(ERR_MSG_INVALID);
     else {
         SynMsg::l(RIGHT_MSG_FORMAT);
-        if(msg.isCreate()) // pairing == CREATE
-            std::cout << "Action: create" << std::endl;
+        if(msg.isCreate()) {// pairing == CREATE
+            std::cout << "Action: create" << std::endl;        
+            opStatus = Syn::create(msg.getMsg());
+            //msg.send(opStatus);
+        }
         else if(msg.isRead())
             std::cout << "Action: read" << std::endl;
         else if(msg.isUpdate())
             std::cout << "Action: update" << std::endl;
         else if(msg.isDelete())
             std::cout << "Action: delete" << std::endl;
-    }
-    
+    }    
     return UND;
+}
+int Syn::create(Json::Value* msg) {
+    bool exist = false;
+    std::string sensorId = msg->get("id", "UTF-8").asString();
+    for(auto s : Syn::sensors) {
+        if(s.getId().compare(sensorId) == 0) 
+            exist=true;
+    }
+    if(!exist) {
+        Syn::sensors.push_back(Sensor());
+        return SNS_PAIRED_SUCC;
+    }
+    return SNS_EXIST;
 }
