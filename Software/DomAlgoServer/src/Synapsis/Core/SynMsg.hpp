@@ -36,9 +36,9 @@ public:
     bool isDelete();
     std::string getId();
     Json::Value * getMsg();
-    int addMsg(void *rawMsg);
-private:
-    Json::Value msg;
+    int addMsg(void * rawMsg);
+    unsigned char * getMsgForWs();private:
+
 };
 
 #endif	/* SYNMSG_HPP */

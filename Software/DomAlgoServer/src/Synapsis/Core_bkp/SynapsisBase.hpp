@@ -1,7 +1,7 @@
 /* 
- * File:   SynBase.cpp
+ * File:   SynapsisBase.hpp
  * Author: Matteo Di Carlo
- * Created on March 17, 2016, 9:01 AM
+ * Created on December 13, 2015, 4:16 PM
  * 
  * Copyright (C) 2016 Matteo Di Carlo - www.gleeno.com
  * This program is free software: you can redistribute it and/or modify
@@ -18,16 +18,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "SynBase.hpp"
+#ifndef SYNAPSISBASE_HPP
+#define	SYNAPSISBASE_HPP
+#include <json/json.h>
+#include <string>
+#include <fstream>
+#include <cerrno>
+#include "Synapsis/Log/Log.hpp"
+#include <Synapsis/Message/en.hpp>
+class SynapsisBase {
+public:
+    SynapsisBase();
+    SynapsisBase(const SynapsisBase& orig);
+    virtual ~SynapsisBase();
+    std::string getContFromFile(std::string source);
+    static Json::Value getJson(char type,std::string* sourceOrPath);
+    Json::Value getSettingsRaw();
+protected:
+    static Json::Value settingsRaw;
+};
 
-int SynBase::l(int code) {
-        switch (code) {
-        case OK: std::cout << "LOG : Success!"<< std::endl; break;
-        case CL_CONNECTED: std::cout << "LOG : Client connected!"<< std::endl; break;
-        case RIGHT_MSG_FORMAT: std::cout << "LOG : Right instruction format"<< std::endl; break;
-        case ERR_BAD_MSG_FORMAT: std::cout << "LOG : Bad instruction format"<< std::endl; break;
-        case ERR_ACTION_NOT_EXIST: std::cout << "LOG : Action not exist"<< std::endl; break;
-        default: std::cout << "LOG: Error : " << code << std::endl;
-        }
-        return code;
-}
+#endif	/* SYNAPSISBASE_HPP */

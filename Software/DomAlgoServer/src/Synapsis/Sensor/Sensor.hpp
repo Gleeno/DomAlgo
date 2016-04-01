@@ -34,7 +34,7 @@ enum sensType {
 class Sensor {
 public:
     Sensor();
-    Sensor(std::string id, sensType type, std::string name, std::string ip);
+    Sensor(std::string id, sensType type, std::string name = "no-name", std::string ip = "no-ip");
     virtual ~Sensor();
     virtual Json::Value getDataSensor();
     sensType getType();

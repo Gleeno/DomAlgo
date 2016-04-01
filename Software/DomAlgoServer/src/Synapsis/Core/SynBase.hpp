@@ -21,15 +21,13 @@
 #ifndef SYNBASE_HPP
 #define	SYNBASE_HPP
 #include "Synapsis/Common/Status.hpp"
-#include "SynFile.hpp"
-#include "SynWS.hpp"
-#include "SynDB.hpp"
+#include "SynIO.hpp"
 
-class SynBase {
+class SynBase : public SynIO{
 public:
-    SynBase();
+    static int l(int code);
 private:
-    SynWS ws;
+    
 };
 
 #endif	/* SYNBASE_HPP */

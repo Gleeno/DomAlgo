@@ -22,14 +22,29 @@
 #define	SYNWS_HPP
 #include <iostream>
 #include <libwebsockets.h>
+#include "SynBase.hpp"
 
-class SynWS {
+class SynWS : public SynBase{
 public:
+    static struct lws* wsi;
+    static char* preBuff;
+    SynWS( int port=9002);
     SynWS(struct lws_protocols* protocols, int port);
     lws_context * getContext();
-private:
-    lws_context* context;    
-};
+    void runWs(int delay);
+    static int mainCallback(struct lws* wsi, lws_callback_reasons reason, void* user, void* in, size_t len);
+    
+    static int parseMessage(void *rawMessage);
+    static int performAction(Json::Value *msg);
+    static int checkFormat(Json::Value *msg);
 
+    static int create(Json::Value *msg, Json::Value* result);
+    static int read(Json::Value *msg, Json::Value* result);
+    static int update(Json::Value *msg, Json::Value* result);
+    static int del(Json::Value *msg, Json::Value* result);
+    static int send (Json::Value * msg);
+private:
+    lws_context* context;
+};
 #endif	/* SYNWS_HPP */
 

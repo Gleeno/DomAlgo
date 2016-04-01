@@ -1,7 +1,7 @@
 /* 
- * File:   SynBase.cpp
+ * File:   SynIO.hpp
  * Author: Matteo Di Carlo
- * Created on March 17, 2016, 9:01 AM
+ * Created on March 17, 2016, 9:05 PM
  * 
  * Copyright (C) 2016 Matteo Di Carlo - www.gleeno.com
  * This program is free software: you can redistribute it and/or modify
@@ -18,16 +18,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "SynBase.hpp"
+#ifndef SYNIO_HPP
+#define	SYNIO_HPP
 
-int SynBase::l(int code) {
-        switch (code) {
-        case OK: std::cout << "LOG : Success!"<< std::endl; break;
-        case CL_CONNECTED: std::cout << "LOG : Client connected!"<< std::endl; break;
-        case RIGHT_MSG_FORMAT: std::cout << "LOG : Right instruction format"<< std::endl; break;
-        case ERR_BAD_MSG_FORMAT: std::cout << "LOG : Bad instruction format"<< std::endl; break;
-        case ERR_ACTION_NOT_EXIST: std::cout << "LOG : Action not exist"<< std::endl; break;
-        default: std::cout << "LOG: Error : " << code << std::endl;
-        }
-        return code;
-}
+#include <iostream>
+#include <fstream>
+#include "Synapsis/Common/Status.hpp"
+#include <json/json.h>
+
+class SynIO {
+public:
+    status_t getTextFile(std::string* source, std::string* result);
+    //todo: setTextFile
+    status_t getJsonFile (std::string* source, Json::Value* result);
+    static int toJson(void* source, Json::Value* result);
+};
+#endif	/* SYNIO_HPP */
+

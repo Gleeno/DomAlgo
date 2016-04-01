@@ -25,7 +25,8 @@
 
 class SimpleSwitch : public Sensor {
 public:
-    SimpleSwitch(std::string id, sensType type, std::string name, std::string ip);
+    SimpleSwitch(std::string id, sensType type, std::string name = "no-name",
+            std::string ip = "no-ip");
     Json::Value getDataSensor();
     bool getState();
     int getSwitchState();

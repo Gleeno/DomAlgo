@@ -21,22 +21,26 @@
 #ifndef SYN_HPP
 #define	SYN_HPP
 #include <vector>
-#include "SynBase.hpp"
-#include "SynMsg.hpp"
-#include "Synapsis/Sensor/Sensor.hpp"
+#include "SynWS.hpp"
+#include "SynDB.hpp"
+#include "SynFile.hpp"
+#include "Synapsis/Sensor/SimpleSwitch.hpp"
 
-class Syn {
+class Syn : public SynWS {
 public:
+    static std::vector<Sensor> sensors;
+    
     Syn();
     int setupWsConnection(int port=9002);
-    lws_context * getWS();
-    static int mainCallback(struct lws *wsi,enum lws_callback_reasons reason, void *user,
-        void *in, size_t len);
+    lws_context * getWS();    
     static int processMessage(void *in);
-    static std::vector<Sensor> sensors;
-    static int create(Json::Value* msg);
+    static bool isPaired(std::string id);
+    static int toWS (int status, Json::Value *response);
+    void run(int delay);
 private:
-    lws_context *ws;
+    SynWS ws;
+    SynDb db;
+    SynFile file;
 };
 
 #endif	/* SYN_HPP */

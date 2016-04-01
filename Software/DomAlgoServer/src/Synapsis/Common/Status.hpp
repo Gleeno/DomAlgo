@@ -26,6 +26,7 @@
 #define L_ERR_GEN  "Generic error",
 #define L_ERR_RW_FILE "Read/write file error" ,
 #define L_LWS_INIT_FAILED  "WebSocket init failed"
+#define L_ERR_NO_ACTION "No Action to perform"
 
 enum status_t {
     SNS_PAIRED_SUCC = 4,
@@ -34,13 +35,13 @@ enum status_t {
     CL_CONNECTED = 2,
     OK = 1,
     UND = 0,
-    ERR_GEN = -1,
+    ERR = -1,
     ERR_RW_FILE = -2,
     ERR_LWS_INIT = -3,
     ERR_JSON_PARSE = -4,
     ERR_MSG_INVALID = -5,
-    ERR_BAD_MSG_FORMAT = -6
-    
+    ERR_BAD_MSG_FORMAT = -6,
+    ERR_ACTION_NOT_EXIST = -7    
 };
 
 #endif	/* ERROR_HPP */

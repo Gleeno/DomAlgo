@@ -38,31 +38,54 @@ int SynMsg::l(int code) {
         return code;
 }
 
+bool SynMsg::isSynMsg() {
+    if (this->msg.isNull() ||
+            this->msg.empty() ||
+            (!this->msg.isMember("action")) ||
+            (!this->msg.isMember("data")) ||
+            (!this->msg.isMember("id")) ||
+            (!this->msg.isMember("type"))
+            ) {
+        return false;
+    }
+    return true;
+}
+
 bool SynMsg::isCreate() {
-    //if(this->msg["action"].asString().compare("create") == 0)
+    if(this->msg["action"].asString().compare("create") == 0)
         return true;
     return false;
 }
 
 bool SynMsg::isRead() {
-    //if(this->msg["action"].asString().compare("read") == 0)
+    if(this->msg["action"].asString().compare("read") == 0)
         return true;
     return false;
 }
 
+bool SynMsg::isUpdate() {
+    if(this->msg["action"].asString().compare("update") == 0)
+        return true;
+    return false;
+}
 
+bool SynMsg::isDelete() {
+    if(this->msg["action"].asString().compare("delete") == 0)
+        return true;
+    return false;
+}
 
 Json::Value * SynMsg::getMsg() {
-//    return &this->msg;
+    return &this->msg;
 }
 
 std::string SynMsg::getId() {
-    //return this->msg.get("id","UTF-8").asString();
+    return this->msg.get("id","UTF-8").asString();
 }
 
 int SynMsg::addMsg(void * rawMsg) {
     Json::Reader reader;
-    int status = 0;//reader.parse((char*)rawMsg,this->msg);
+    int status = reader.parse((char*)rawMsg,this->msg);
     if (!status) 
         return l(ERR_JSON_PARSE);
     return OK;    

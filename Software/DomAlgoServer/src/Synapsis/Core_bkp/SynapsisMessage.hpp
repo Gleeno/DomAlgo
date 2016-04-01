@@ -1,7 +1,7 @@
 /* 
- * File:   SynBase.cpp
+ * File:   SynapsisMessage.hpp
  * Author: Matteo Di Carlo
- * Created on March 17, 2016, 9:01 AM
+ * Created on March 13, 2016, 5:02 PM
  * 
  * Copyright (C) 2016 Matteo Di Carlo - www.gleeno.com
  * This program is free software: you can redistribute it and/or modify
@@ -18,16 +18,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "SynBase.hpp"
+#ifndef SYNAPSISMESSAGE_HPP
+#define	SYNAPSISMESSAGE_HPP
+#include "Synapsis/Core/SynapsisBase.hpp"
+#include <Synapsis/Message/en.hpp>
 
-int SynBase::l(int code) {
-        switch (code) {
-        case OK: std::cout << "LOG : Success!"<< std::endl; break;
-        case CL_CONNECTED: std::cout << "LOG : Client connected!"<< std::endl; break;
-        case RIGHT_MSG_FORMAT: std::cout << "LOG : Right instruction format"<< std::endl; break;
-        case ERR_BAD_MSG_FORMAT: std::cout << "LOG : Bad instruction format"<< std::endl; break;
-        case ERR_ACTION_NOT_EXIST: std::cout << "LOG : Action not exist"<< std::endl; break;
-        default: std::cout << "LOG: Error : " << code << std::endl;
-        }
-        return code;
-}
+class SynapsisMessage : public SynapsisBase 
+{
+public:
+    SynapsisMessage();
+    SynapsisMessage(void *in);
+    bool isSynapsisInstruction();
+protected:
+    Json::Value message;
+};
+
+#endif	/* SYNAPSISMESSAGE_HPP */
+

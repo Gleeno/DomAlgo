@@ -20,54 +20,45 @@
 
 #include "Sensor.hpp"
 
-Sensor::Sensor(std::string id, sensType type, std::string name, std::string ip)
-{
+Sensor::Sensor(std::string id, sensType type, std::string name, std::string ip) {
     this->id = id;
     this->type = type;
     this->name = name;
     this->ip = ip;
 }
 
-Sensor::Sensor()
-{
+Sensor::Sensor() {
 
 }
 
-Sensor::~Sensor()
-{
+Sensor::~Sensor() {
 }
 
-sensType Sensor::getType()
-{
+sensType Sensor::getType() {
     return this->type;
 }
 
-std::string Sensor::getId()
-{
+std::string Sensor::getId() {
     return this->id;
 }
 
-std::string Sensor::getIp()
-{
+std::string Sensor::getIp() {
     return this->ip;
 }
 
-std::string Sensor::getName()
-{
+std::string Sensor::getName() {
     return this->name;
 }
 
-int Sensor::getWifiSignal()
-{
+int Sensor::getWifiSignal() {
     return this->wifiSignal;
 }
 
 //get general values
 
-Json::Value Sensor::getDataSensor()
-{
+Json::Value Sensor::getDataSensor() {
     Json::Value data;
-    // get all sensors data
+    // get all sensor datas
     data["ip"] = getIp();
     data["name"] = getName();
     data["id"] = getId();

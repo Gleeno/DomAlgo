@@ -25,66 +25,101 @@ std::vector<Sensor> Syn::sensors;
 Syn::Syn() {
 }
 
-
 int Syn::setupWsConnection(int port) {
-    static struct lws_protocols protocols[] = {
-        { "mainProtocol", mainCallback, 0},
-        { NULL, NULL, 0}
-    };
-
-    SynWS ws = SynWS(protocols, port);
-    this->ws = ws.getContext();
+    this->ws = SynWS(port);
     return UND;
 }
 
-lws_context * Syn::getWS() {
-    return this->ws;
+void Syn::run(int delay) {
+    runWs(delay);
 }
+//SYN WS FUNCIOTNS
 
-int Syn::mainCallback(struct lws* wsi, lws_callback_reasons reason, void* user, void* in, size_t len) {
-    switch (reason) {
-    case LWS_CALLBACK_ESTABLISHED:
-        SynMsg::l(CL_CONNECTED);
-        break;
-        case LWS_CALLBACK_RECEIVE:
-            processMessage(in);
-            break;
+int SynWS::checkFormat(Json::Value* msg) {
+    if (msg->isNull() ||
+        msg->empty() ||
+        (!msg->isMember("action")) ||
+        (!msg->isMember("data")) ||
+        (!msg->isMember("id")) ||
+        (!msg->isMember("type"))
+        ) {
+        return ERR;
     }
-    return 0;
+    return OK;
 }
 
-int Syn::processMessage(void* in) {
-    SynMsg msg = SynMsg(in);
-    int opStatus = UND;
-    // check for right msg format
-    if(!msg.isSynMsg()) 
-        return SynMsg::l(ERR_MSG_INVALID);
-    else {
-        SynMsg::l(RIGHT_MSG_FORMAT);
-        if(msg.isCreate()) {// pairing == CREATE
-            std::cout << "Action: create" << std::endl;        
-            opStatus = Syn::create(msg.getMsg());
-            //msg.send(opStatus);
+int SynWS::performAction(Json::Value *msg) {
+    int status = UND;
+    std::string action;
+    Json::Value response = Json::Value();
+    
+    action = msg->get("action", "UTF-8").asString();
+    //CRUD
+    if (action.compare("create") == 0) //ACTION CREATE
+        status = create(msg, &response);
+    else if (action.compare("read") == 0)
+        status = read(msg, &response);
+    else if (action.compare("update") == 0)
+       status = update(msg, &response);
+    else if (action.compare("delete") == 0)
+        status = del(msg, &response);
+    else
+        status =(ERR_ACTION_NOT_EXIST);    
+    Syn::toWS(status, &response);    
+    return l(status);
+}
+
+bool Syn::isPaired(std::string id) {
+    for(auto s : sensors) {
+        if(id.compare(s.getId()) == 0) return true;
+    }
+    return false;
+}
+
+int SynWS::create(Json::Value* msg, Json::Value *result) {
+    std::cout << "Action: create" << std::endl;
+    std::string message;
+    if(!Syn::isPaired((*msg)["id"].asString())) {
+        Syn::sensors.push_back(SimpleSwitch((*msg)["id"].asString(),(sensType)(*msg)["type"].asInt()));
+        message = "Sensor with id: " + (*msg)["id"].asString() + " added";
+    }
+    else message = "Sensor with id: " + (*msg)["id"].asString() + " already paired";
+    (*result)["action"] = "update";
+    (*result)["id"] = (*msg)["id"];
+    (*result)["type"] = (*msg)["type"];
+    (*result)["data"] = message;    
+    return OK;
+}
+
+int SynWS::read(Json::Value* msg, Json::Value* result) {
+    std::string id = (*msg)["id"].asString();
+    Json::Value tmp;
+    if(id.compare("all") == 0) {
+        for( auto s: Syn::sensors) {
+            (*result)["data"].append(s.getDataSensor());
         }
-        else if(msg.isRead())
-            std::cout << "Action: read" << std::endl;
-        else if(msg.isUpdate())
-            std::cout << "Action: update" << std::endl;
-        else if(msg.isDelete())
-            std::cout << "Action: delete" << std::endl;
-    }    
-    return UND;
+    }
+    else {
+        //TO BE IMPLEMENTED: SENSOR WITH SPEIFIC ID
+        (*result)["data"] = "to be implemented";
+    }
+    (*result)["id"] = id;
+    (*result)["action"] = "read";  
+    (*result)["type"] = "all";
+    return OK;
 }
-int Syn::create(Json::Value* msg) {
-    bool exist = false;
-    std::string sensorId = msg->get("id", "UTF-8").asString();
-    for(auto s : Syn::sensors) {
-        if(s.getId().compare(sensorId) == 0) 
-            exist=true;
+
+int SynWS::update(Json::Value* msg, Json::Value* result) {
+}
+
+int SynWS::del(Json::Value* msg, Json::Value* result) {
+}
+
+
+int Syn::toWS(int status, Json::Value *result) {
+    if(status == OK) {
+        send(result);
     }
-    if(!exist) {
-        Syn::sensors.push_back(Sensor());
-        return SNS_PAIRED_SUCC;
-    }
-    return SNS_EXIST;
+    
+    return UND;
 }

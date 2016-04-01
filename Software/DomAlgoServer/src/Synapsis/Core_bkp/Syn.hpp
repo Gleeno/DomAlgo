@@ -1,7 +1,7 @@
 /* 
- * File:   SynBase.cpp
+ * File:   Syn.hpp
  * Author: Matteo Di Carlo
- * Created on March 17, 2016, 9:01 AM
+ * Created on March 17, 2016, 8:59 AM
  * 
  * Copyright (C) 2016 Matteo Di Carlo - www.gleeno.com
  * This program is free software: you can redistribute it and/or modify
@@ -18,16 +18,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef SYN_HPP
+#define	SYN_HPP
+#include <vector>
 #include "SynBase.hpp"
+#include "SynMsg.hpp"
+#include "Synapsis/Sensor/Sensor.hpp"
 
-int SynBase::l(int code) {
-        switch (code) {
-        case OK: std::cout << "LOG : Success!"<< std::endl; break;
-        case CL_CONNECTED: std::cout << "LOG : Client connected!"<< std::endl; break;
-        case RIGHT_MSG_FORMAT: std::cout << "LOG : Right instruction format"<< std::endl; break;
-        case ERR_BAD_MSG_FORMAT: std::cout << "LOG : Bad instruction format"<< std::endl; break;
-        case ERR_ACTION_NOT_EXIST: std::cout << "LOG : Action not exist"<< std::endl; break;
-        default: std::cout << "LOG: Error : " << code << std::endl;
-        }
-        return code;
-}
+class Syn {
+public:
+    Syn();
+    int setupWsConnection(int port=9002);
+    lws_context * getWS();
+    static int mainCallback(struct lws *wsi,enum lws_callback_reasons reason, void *user,
+        void *in, size_t len);
+    static int processMessage(void *in);
+    static std::vector<Sensor> sensors;
+    static int create(Json::Value* msg, SynMsg * response);
+    static int send (SynMsg * msg);
+    int run(int delay);
+private:
+    SynWS ws;
+    SynDb db;
+    SynFile file;
+};
+
+#endif	/* SYN_HPP */
