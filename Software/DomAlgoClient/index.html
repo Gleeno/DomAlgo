@@ -27,7 +27,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <link rel="stylesheet" href="css/default.css" />
     </head>
     <body ng-app="DomAlgo">
-        <div class="container"><!-- START container -->
+        <div class="container" ng-controller="DomAlgo"><!-- START container -->
+            <div class="col-md-12"><!-- START test -->
+            <button ng-click="test.addSensor()" class="btn">New Sensor</button>
+            <button ng-click="test.getAllSensorsData()" class="btn">Get all sensors</button>
+        </div><!-- END test -->
             <nav class="navbar  navbar-fixed-top navbar-inverse"><!-- START main navbar -->
                 <div class="container"><!-- START main navbar container -->
                     <div class="navbar-header col-md-2"><!-- START info -->
@@ -62,10 +66,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <div ng-view></div>
             </div><!-- END content -->
         </div><!-- END container -->
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.js"></script>
         <script src="js/libs/angular-1.5.0/angular.js"></script>
         <script src="js/libs/angular-1.5.0/angular-route.js"></script>
-        <script src="js/DomAlgo/controllers/daRealTime.js"></script>
+        <script src="js/libs/syn/syn.module.js"></script>
+        <script src="js/libs/syn/services/syn.io.service.js"></script>
         <script src="js/DomAlgo/DomAlgo.js"></script>
+        <script src="js/DomAlgo/controllers/DomAlgo.controller.js"></script>
+        <script src="js/DomAlgo/models/DomAlgo.model.js"></script>
+        <script src="js/DomAlgo/controllers/realTime.controller.js"></script>        
     </body>
 </html>

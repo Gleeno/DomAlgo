@@ -15,9 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 angular
-    .module("daRealTime",[])
-    .controller("realTime", realTimeController);
+    .module("DomAlgo")
+    .controller("realTime", realTimeBlock);
 
-function realTimeController() {
+realTimeBlock.$inject= ["$rootScope"]
+
+function realTimeBlock(rootScope) {
     
-}
+}   

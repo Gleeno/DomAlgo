@@ -19,38 +19,89 @@ var DomAlgo = angular
     .module("DomAlgo",
         [
             "ngRoute",
-            "daRealTime",
+            "syn"
         ])
     .config(configure)
     .run(runBlock);
 
-configure.$inject = [ '$routeProvider', '$locationProvider' ] ;
-runBlock.$inject = [ '$http', '$rootScope' ];
+configure.$inject = ['$routeProvider', '$locationProvider'];
+runBlock.$inject = ['$http', '$rootScope', 'synIO'];
 
-function configure( routeProvider, locationProvider) {
+function configure(routeProvider, locationProvider) {
     routeProvider
         .when("/", {
             templateUrl: "pages/realTime.html",
-            controller : "realTime"        
+            controller: "realTime"
         })
-        .when ("/realTime.html", {
+        .when("/realTime", {
             templateUrl: "pages/realTime.html",
-            controller : "realTimeCtrl"
+            controller: "realTime"
         })
-        .otherwise ({ redirectTo:"" });
-    }
+        .otherwise({redirectTo: ""});
+}
 
-    function runBlock(http, rootScope) {
-        rootScope.sensors = [];
-        activate();
-        
-        function activate() {
-            //realTime();
+function runBlock(http, rootScope, synIO) {
+    rootScope.sensors = [];
+    rootScope.ws = null;
+    activate();
+
+    function activate() {
+        console.log(" Settings load... ");
+        rootScope.ws = synIO.open("ws", "ws://127.0.0.1:9002");
+        rootScope.ws.onmessage = onMessage;
+
+    }
+    function onMessage(msg) {
+        console.log("msg: " + msg.data);
+        processMessage(msg.data);
+    }
+    
+    function processMessage(rawMessage) {
+        var msg = JSON.parse(rawMessage);
+        if(checkFormat(msg) === true) {
+        switch (msg.action) {
+            case 'update' :
+                update(msg);
+                break;
+            default:
+                    console.log("action not implemented: " + msg.action);
+                    break;
         }
     }
-//______________________________________________________________________________
-
-var Sensor = function () {
-    this.id;
-    this.type;
+    else console.log("Invalid message format. No action to perform");
     }
+    
+    function checkFormat(msg) {
+        //TO BE IMPLEMENTED
+        console.log("CheckFormat: to be implemented: always true");
+        return true;
+    }
+        
+    function update(msg) {
+        console.log("perform update");
+        if(msg.id === 'all'){
+            var n = Object.keys(msg.data).length;
+            console.log("update " + n + " sensors");
+            for(var i=0; i<n;i++) {
+                var index = isMember(msg.data[i].id);
+                if(index === -1) { // sensor not registered
+                    console.log("sensor not registered. pairing ( id: " + msg.data[i].id + " )");
+                    s = new Sensor();
+                    s.id = msg.data[i].id;
+                    s.type = msg.data[i].type;
+                    rootScope.sensors.push(s);
+                }
+                else console.log("sensor with id " + msg.data[i].id + "registered yet.");
+            }
+            console.log(rootScope.sensors.length);
+        }
+    }
+    
+    function isMember(id) {
+        for(var i = 0; i< rootScope.sensors.length; i++) {
+            if (id === rootScope.sensors.id) return i;
+        }
+        return -1;
+    }
+}
+//______________________________________________________________________________
