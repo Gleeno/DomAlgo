@@ -104,12 +104,13 @@ int SynWS::read(Json::Value* msg, Json::Value* result) {
         (*result)["data"] = "to be implemented";
     }
     (*result)["id"] = id;
-    (*result)["action"] = "read";  
+    (*result)["action"] = "update";  
     (*result)["type"] = "all";
     return OK;
 }
 
 int SynWS::update(Json::Value* msg, Json::Value* result) {
+    
 }
 
 int SynWS::del(Json::Value* msg, Json::Value* result) {
