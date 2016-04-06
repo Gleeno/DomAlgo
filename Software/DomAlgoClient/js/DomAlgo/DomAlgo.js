@@ -78,23 +78,7 @@ function runBlock(http, rootScope, synIO) {
     }
         
     function update(msg) {
-        console.log("perform update");
-        if(msg.id === 'all'){
-            var n = Object.keys(msg.data).length;
-            console.log("update " + n + " sensors");
-            for(var i=0; i<n;i++) {
-                var index = isMember(msg.data[i].id);
-                if(index === -1) { // sensor not registered
-                    console.log("sensor not registered. pairing ( id: " + msg.data[i].id + " )");
-                    s = new Sensor();
-                    s.id = msg.data[i].id;
-                    s.type = msg.data[i].type;
-                    rootScope.sensors.push(s);
-                }
-                else console.log("sensor with id " + msg.data[i].id + "registered yet.");
-            }
-            console.log(rootScope.sensors.length);
-        }
+        realTime.realTimeUpdate(msg);
     }
     
     function isMember(id) {
