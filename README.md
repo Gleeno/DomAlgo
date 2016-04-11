@@ -5,7 +5,7 @@ DomAlgo is a full, lightweight and fast system that provide all components to re
 
 It's available for Linux x86/x64/ARM distros, Windows and MacOS version will be developed in future.
 
-For complete documentation and other info, see the [Wiki](https://github.com/Gleeno/DomAlgo/wiki) and [project page](http://gleeno.github.io/DomAlgo)
+For complete documentation and other info, see the [Wiki](https://github.com/Gleeno/DomAlgo/wiki).
 
 ##Features
   - Real time monitoring
